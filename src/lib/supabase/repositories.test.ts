@@ -58,6 +58,7 @@ describe("supabase repositories", () => {
     })
 
     const auth = {
+      getSession: vi.fn().mockResolvedValue({ data: { session: { user: { id: "user-1" } } } }),
       getUser: vi.fn().mockResolvedValue({ data: { user: { id: "user-1" } }, error: null }),
     }
 
@@ -87,6 +88,7 @@ describe("supabase repositories", () => {
     const upsert = vi.fn().mockReturnValue({ select })
     const from = vi.fn().mockReturnValue({ upsert })
     const auth = {
+      getSession: vi.fn().mockResolvedValue({ data: { session: { user: { id: "user-1" } } } }),
       getUser: vi.fn().mockResolvedValue({ data: { user: { id: "user-1" } }, error: null }),
     }
 

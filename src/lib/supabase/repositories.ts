@@ -36,6 +36,14 @@ type ActivityWithBucketsResponse = {
 
 async function requireUserId(client: SupabaseClient): Promise<string> {
   const {
+    data: { session },
+  } = await client.auth.getSession()
+
+  if (session?.user?.id) {
+    return session.user.id
+  }
+
+  const {
     data: { user },
     error,
   } = await client.auth.getUser()
