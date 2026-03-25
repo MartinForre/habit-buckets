@@ -137,7 +137,7 @@ export function DashboardLiveSections({ initialState }: DashboardLiveSectionsPro
             return (
               <li
                 key={bucket.id}
-                className={`touch-target flex min-w-[9.5rem] snap-start flex-col items-start justify-center rounded-xl border px-3 py-2 ${tone.containerClass}`}
+                className={`touch-target flex min-w-[6.75rem] flex-1 snap-start flex-col items-start justify-center rounded-xl border px-3 py-2 ${tone.containerClass}`}
               >
                 <span className="font-medium">{bucket.name}</span>
                 <span className="mt-1 text-xs font-semibold">{counts?.checked ?? 0} of {counts?.total ?? 0}</span>
