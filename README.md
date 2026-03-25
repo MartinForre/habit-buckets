@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Habit Buckets is a [Next.js](https://nextjs.org) App Router project for a minimal bucket-based daily habit tracker.
 
 ## Getting Started
 
-First, run the development server:
+1) Install dependencies:
+
+```bash
+npm install
+```
+
+2) Copy env file and add Supabase values:
+
+```bash
+cp .env.example .env.local
+```
+
+3) Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - Start vinext (Vite) dev server
+- `npm run build` - Build with vinext
+- `npm run start` - Start vinext production server
+- `npm run dev:next` - Start Next.js dev server (fallback/compat)
+- `npm run build:next` - Build with Next.js (fallback/compat)
+- `npm run start:next` - Start Next.js production server (fallback/compat)
+- `npm run lint` - Run ESLint
+- `npm run test` - Run unit tests once
+- `npm run test:watch` - Run unit tests in watch mode
 
-## Learn More
+## Tech Base
 
-To learn more about Next.js, take a look at the following resources:
+- vinext + Vite (Next.js-compatible runtime)
+- Next.js 16 dependency retained for compatibility during migration
+- Tailwind CSS v4
+- shadcn/ui baseline components
+- Supabase client setup (server + browser)
+- Vitest + Testing Library for unit tests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For framework docs, see [Next.js documentation](https://nextjs.org/docs).

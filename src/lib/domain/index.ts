@@ -1,0 +1,5 @@
+export { assertDateKey, getTodayDateKey, isDateKey } from "@/lib/domain/date"
+export { UserSafeError } from "@/lib/domain/errors"
+export { createHabitService, createHabitServiceFromClient } from "@/lib/domain/service"
+export type { ActivityPayload, DailyState } from "@/lib/domain/types"
+export { validateActivityPayload } from "@/lib/domain/validation"

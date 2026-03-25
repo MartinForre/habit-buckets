@@ -4,35 +4,35 @@ Use this file as the execution tracker for all acceptance criteria.
 
 ## Task 01: Project Bootstrap
 
-- [ ] App runs locally and renders a basic shell page.
-- [ ] Tailwind and shadcn styles are loaded correctly.
-- [ ] Supabase client modules compile and can be imported from app code.
-- [ ] `npm run lint` and `npm run build` succeed.
-- [ ] Unit tests for basic app bootstrap and shared utilities are implemented and passing.
+- [x] App runs locally and renders a basic shell page.
+- [x] Tailwind and shadcn styles are loaded correctly.
+- [x] Supabase client modules compile and can be imported from app code.
+- [x] `npm run lint` and `npm run build` succeed.
+- [x] Unit tests for basic app bootstrap and shared utilities are implemented and passing.
 
 ## Task 02: Supabase Schema and RLS
 
-- [ ] All required tables exist with columns matching `docs/requirements.md`.
-- [ ] RLS is enabled on user-owned tables and blocks cross-user access.
-- [ ] New users receive default buckets automatically.
-- [ ] Migrations run cleanly on a fresh database.
-- [ ] Unit tests for schema-level logic helpers and policy-aware data access wrappers are implemented and passing.
+- [x] All required tables exist with columns matching `docs/requirements.md`.
+- [x] RLS is enabled on user-owned tables and blocks cross-user access.
+- [x] New users receive default buckets automatically.
+- [x] Migrations run cleanly on a fresh database.
+- [x] Unit tests for schema-level logic helpers and policy-aware data access wrappers are implemented and passing.
 
 ## Task 03: Authentication
 
-- [ ] Users can sign up and sign in with email/password.
-- [ ] Authenticated sessions persist across refresh and browser restarts.
-- [ ] Protected routes redirect unauthenticated users to sign-in.
-- [ ] Authenticated users are auto-routed to the dashboard.
-- [ ] Unit tests for auth guards, session utilities, and auth state transitions are implemented and passing.
+- [x] Users can sign up and sign in with email/password.
+- [x] Authenticated sessions persist across refresh and browser restarts.
+- [x] Protected routes redirect unauthenticated users to sign-in.
+- [x] Authenticated users are auto-routed to the dashboard.
+- [x] Unit tests for auth guards, session utilities, and auth state transitions are implemented and passing.
 
 ## Task 04: Core Domain and Data Access
 
-- [ ] Data-access functions cover: fetch today state, toggle completion, CRUD activity, fetch history day.
-- [ ] Date logic consistently resolves "today" for user-facing daily reset behavior.
-- [ ] Invalid payloads are rejected with user-safe errors.
-- [ ] Service layer is reusable by routes/components without duplication.
-- [ ] Unit tests for domain transforms, date boundary behavior, and validation logic are implemented and passing.
+- [x] Data-access functions cover: fetch today state, toggle completion, CRUD activity, fetch history day.
+- [x] Date logic consistently resolves "today" for user-facing daily reset behavior.
+- [x] Invalid payloads are rejected with user-safe errors.
+- [x] Service layer is reusable by routes/components without duplication.
+- [x] Unit tests for domain transforms, date boundary behavior, and validation logic are implemented and passing.
 
 ## Task 05: Dashboard Shell and Bucket Status
 
