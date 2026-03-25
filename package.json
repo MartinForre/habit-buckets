@@ -6,6 +6,9 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "vinext start",
+    "dev:next": "next dev",
+    "build:next": "next build",
+    "start:next": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest"
