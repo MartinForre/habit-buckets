@@ -1,4 +1,4 @@
-const CACHE_NAME = "habit-buckets-v1"
+const CACHE_NAME = "habit-buckets-v2"
 const APP_SHELL = ["/", "/login", "/signup", "/manifest.webmanifest"]
 
 self.addEventListener("install", (event) => {
@@ -23,6 +23,38 @@ self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url)
 
   if (requestUrl.origin !== self.location.origin) {
+    return
+  }
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const cloned = response.clone()
+
+          if (response.ok) {
+            void caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned))
+          }
+
+          return response
+        })
+        .catch(async () => {
+          const cachedNavigation = await caches.match(event.request)
+
+          if (cachedNavigation) {
+            return cachedNavigation
+          }
+
+          const cachedLogin = await caches.match("/login")
+
+          if (cachedLogin) {
+            return cachedLogin
+          }
+
+          return new Response("Offline", { status: 503, statusText: "Offline" })
+        })
+    )
+
     return
   }
 

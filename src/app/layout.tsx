@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 
 import { PwaRegister } from "@/components/pwa-register"
+import { PullToRefresh } from "@/components/pull-to-refresh"
 import { assertRequiredEnv } from "@/lib/env"
 import { PWA_APP_NAME, PWA_THEME_COLOR } from "@/lib/pwa/config"
 
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <PwaRegister />
+        <PullToRefresh />
         {children}
       </body>
     </html>
