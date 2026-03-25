@@ -3,19 +3,49 @@ export type SupabasePublicEnv = {
   anonKey: string
 }
 
-export function getSupabasePublicEnv(): SupabasePublicEnv {
-  const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = process.env
+type EnvSource = Record<string, string | undefined>
 
-  if (!NEXT_PUBLIC_SUPABASE_URL) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL")
+function requireEnv(source: EnvSource, key: string): string {
+  const value = source[key]?.trim()
+
+  if (!value) {
+    throw new Error(`Missing ${key}`)
   }
 
-  if (!NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_ANON_KEY")
+  return value
+}
+
+function requireUrl(value: string, key: string): string {
+  try {
+    const url = new URL(value)
+
+    if (url.protocol !== "https:") {
+      throw new Error()
+    }
+
+    return value
+  } catch {
+    throw new Error(`Invalid ${key}: expected an https URL`)
   }
+}
+
+export function parseSupabasePublicEnv(source: EnvSource = process.env): SupabasePublicEnv {
+  const supabaseUrl = requireUrl(
+    requireEnv(source, "NEXT_PUBLIC_SUPABASE_URL"),
+    "NEXT_PUBLIC_SUPABASE_URL"
+  )
+  const supabaseAnonKey = requireEnv(source, "NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
   return {
-    url: NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey,
   }
+}
+
+export function assertRequiredEnv(source: EnvSource = process.env): void {
+  parseSupabasePublicEnv(source)
+}
+
+export function getSupabasePublicEnv(): SupabasePublicEnv {
+  return parseSupabasePublicEnv(process.env)
 }

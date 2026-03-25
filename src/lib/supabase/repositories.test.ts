@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest"
 import {
   createActivityWithBuckets,
   listBuckets,
+  updateActivityWithBuckets,
   upsertActivityLog,
 } from "@/lib/supabase/repositories"
 
@@ -90,5 +91,51 @@ describe("supabase repositories", () => {
         onConflict: "user_id,activity_id,date",
       }
     )
+  })
+
+  it("updates activity and rewrites bucket mappings", async () => {
+    const single = vi.fn().mockResolvedValue({
+      data: { id: "a1", name: "New name", created_at: "2026-01-01T00:00:00Z" },
+      error: null,
+    })
+
+    const selectForUpdate = vi.fn().mockReturnValue({ single })
+    const eqForUpdate = vi.fn().mockReturnValue({ select: selectForUpdate })
+    const update = vi.fn().mockReturnValue({ eq: eqForUpdate })
+
+    const selectForDeleteMappings = vi.fn().mockResolvedValue({ data: [{ id: "m1" }], error: null })
+    const eqForDeleteMappings = vi.fn().mockReturnValue({ select: selectForDeleteMappings })
+    const deleteFn = vi.fn().mockReturnValue({ eq: eqForDeleteMappings })
+
+    const selectForInsertMappings = vi.fn().mockResolvedValue({ data: [{ id: "m2" }], error: null })
+    const insertForMappings = vi.fn().mockReturnValue({ select: selectForInsertMappings })
+
+    const from = vi.fn((table: string) => {
+      if (table === "activities") {
+        return { update }
+      }
+
+      if (table === "activity_buckets") {
+        return {
+          delete: deleteFn,
+          insert: insertForMappings,
+        }
+      }
+
+      throw new Error(`Unexpected table ${table}`)
+    })
+
+    await updateActivityWithBuckets(
+      { from } as never,
+      "a1",
+      { name: "New name", bucketIds: ["body", "people"] }
+    )
+
+    expect(update).toHaveBeenCalledWith({ name: "New name" })
+    expect(deleteFn).toHaveBeenCalled()
+    expect(insertForMappings).toHaveBeenCalledWith([
+      { activity_id: "a1", bucket_id: "body" },
+      { activity_id: "a1", bucket_id: "people" },
+    ])
   })
 })

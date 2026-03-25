@@ -138,6 +138,24 @@ export async function listActivityLogsForDate(
   return (result.data ?? []) as ActivityLogRecord[]
 }
 
+export async function listActivityLogDates(
+  client: SupabaseClient,
+  limit = 30
+): Promise<string[]> {
+  const result = await client
+    .from("activity_logs")
+    .select("date")
+    .order("date", { ascending: false })
+    .limit(limit)
+
+  if (result.error) {
+    unwrapDbResult(result, "Failed to fetch activity log dates")
+  }
+
+  const rows = (result.data ?? []) as Array<{ date: string }>
+  return Array.from(new Set(rows.map((row) => row.date)))
+}
+
 export async function upsertActivityLog(
   client: SupabaseClient,
   input: {

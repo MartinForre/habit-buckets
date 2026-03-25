@@ -1,10 +1,30 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
+
+import { PwaRegister } from "@/components/pwa-register"
+import { assertRequiredEnv } from "@/lib/env"
+import { PWA_APP_NAME, PWA_THEME_COLOR } from "@/lib/pwa/config"
 
 import "./globals.css"
 
+assertRequiredEnv()
+
 export const metadata: Metadata = {
-  title: "Habit Buckets",
+  title: PWA_APP_NAME,
   description: "A minimal daily habit tracker with bucket-based progress",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: PWA_APP_NAME,
+  },
+  icons: {
+    icon: [{ url: "/icons/icon-192.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icons/icon-192.svg", type: "image/svg+xml" }],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: PWA_THEME_COLOR,
 }
 
 export default function RootLayout({
@@ -14,7 +34,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <PwaRegister />
+        {children}
+      </body>
     </html>
   )
 }

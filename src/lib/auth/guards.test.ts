@@ -19,6 +19,7 @@ describe("auth guards", () => {
     expect(isProtectedRoute("/")).toBe(true)
     expect(isProtectedRoute("/dashboard")).toBe(true)
     expect(isProtectedRoute("/dashboard/history")).toBe(true)
+    expect(isProtectedRoute("/history")).toBe(true)
     expect(isProtectedRoute("/login")).toBe(false)
   })
 

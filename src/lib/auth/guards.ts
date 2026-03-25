@@ -10,7 +10,7 @@ export function isProtectedRoute(pathname: string): boolean {
     return true
   }
 
-  return pathname.startsWith("/dashboard")
+  return pathname.startsWith("/dashboard") || pathname.startsWith("/history")
 }
 
 export function createLoginRedirectPath(pathname: string, search: string): string {

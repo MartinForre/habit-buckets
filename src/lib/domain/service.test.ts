@@ -66,6 +66,27 @@ describe("habit service", () => {
     })
   })
 
+  it("creates a completed log when no log exists for that date", async () => {
+    const repo = createRepositoryMock()
+    repo.getActivityLogForDate.mockResolvedValue(null)
+    repo.upsertActivityLog.mockResolvedValue({ activity_id: "a2", completed: true })
+
+    const service = createHabitService(repo)
+    const result = await service.toggleActivityCompletion("a2", { date: "2026-03-24" })
+
+    expect(repo.getActivityLogForDate).toHaveBeenCalledWith("a2", "2026-03-24")
+    expect(repo.upsertActivityLog).toHaveBeenCalledWith({
+      activityId: "a2",
+      date: "2026-03-24",
+      completed: true,
+    })
+    expect(result).toEqual({
+      activityId: "a2",
+      date: "2026-03-24",
+      completed: true,
+    })
+  })
+
   it("validates payloads for create and update activity", async () => {
     const repo = createRepositoryMock()
     repo.createActivityWithBuckets.mockResolvedValue({ id: "a1", name: "Disc golf" })
@@ -89,5 +110,29 @@ describe("habit service", () => {
       name: "Walk",
       bucketIds: ["body"],
     })
+  })
+
+  it("rejects update when no buckets are selected", async () => {
+    const repo = createRepositoryMock()
+    const service = createHabitService(repo)
+
+    await expect(
+      service.updateActivity("a1", {
+        name: "Walk",
+        bucketIds: [],
+      })
+    ).rejects.toThrow("Select at least one bucket")
+
+    expect(repo.updateActivityWithBuckets).not.toHaveBeenCalled()
+  })
+
+  it("deletes activities through repository", async () => {
+    const repo = createRepositoryMock()
+    repo.deleteActivityById.mockResolvedValue(undefined)
+
+    const service = createHabitService(repo)
+    await service.deleteActivity("a1")
+
+    expect(repo.deleteActivityById).toHaveBeenCalledWith("a1")
   })
 })

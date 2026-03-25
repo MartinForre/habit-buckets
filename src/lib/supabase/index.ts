@@ -7,6 +7,7 @@ export {
   getActivityLogForDate,
   listActivities,
   listActivitiesWithBucketIds,
+  listActivityLogDates,
   listActivityLogsForDate,
   listBuckets,
   updateActivityWithBuckets,

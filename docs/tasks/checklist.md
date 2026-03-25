@@ -36,59 +36,59 @@ Use this file as the execution tracker for all acceptance criteria.
 
 ## Task 05: Dashboard Shell and Bucket Status
 
-- [ ] Dashboard loads for authenticated users and displays date, buckets, and visual status.
-- [ ] Bucket state follows rule: complete when at least one linked activity is completed today.
-- [ ] Complete and incomplete states use clear, distinct visual cues.
-- [ ] Empty state prompts user to add activities without dead ends.
-- [ ] Unit tests for bucket completion calculation and dashboard view-model mapping are implemented and passing.
+- [x] Dashboard loads for authenticated users and displays date, buckets, and visual status.
+- [x] Bucket state follows rule: complete when at least one linked activity is completed today.
+- [x] Complete and incomplete states use clear, distinct visual cues.
+- [x] Empty state prompts user to add activities without dead ends.
+- [x] Unit tests for bucket completion calculation and dashboard view-model mapping are implemented and passing.
 
 ## Task 06: Activity Toggle and Daily Logs
 
-- [ ] Users can toggle activities on and off from the dashboard.
-- [ ] Toggle action persists immediately and survives refresh.
-- [ ] Bucket indicators update instantly when toggles change completion state.
-- [ ] Completion is date-scoped; previous or next day data is not overwritten.
-- [ ] Unit tests for toggle reducer/service logic and date-scoped persistence behavior are implemented and passing.
+- [x] Users can toggle activities on and off from the dashboard.
+- [x] Toggle action persists immediately and survives refresh.
+- [x] Bucket indicators update instantly when toggles change completion state.
+- [x] Completion is date-scoped; previous or next day data is not overwritten.
+- [x] Unit tests for toggle reducer/service logic and date-scoped persistence behavior are implemented and passing.
 
 ## Task 07: Activity Management CRUD
 
-- [ ] Users can create an activity linked to one or multiple buckets.
-- [ ] Users can edit activity name and bucket associations.
-- [ ] Users can delete an activity and it no longer appears in dashboard/history.
-- [ ] Validation prevents empty names and zero-bucket selection.
-- [ ] Unit tests for create/update/delete validation and bucket-mapping rules are implemented and passing.
+- [x] Users can create an activity linked to one or multiple buckets.
+- [x] Users can edit activity name and bucket associations.
+- [x] Users can delete an activity and it no longer appears in dashboard/history.
+- [x] Validation prevents empty names and zero-bucket selection.
+- [x] Unit tests for create/update/delete validation and bucket-mapping rules are implemented and passing.
 
 ## Task 08: History View
 
-- [ ] Users can view previous days from history.
-- [ ] Each history day shows which buckets were complete and which activities were done.
-- [ ] History view is read-only and does not mutate logs.
-- [ ] Days with no activity logs show a clear empty state.
-- [ ] Unit tests for history aggregation/selectors and date filtering are implemented and passing.
+- [x] Users can view previous days from history.
+- [x] Each history day shows which buckets were complete and which activities were done.
+- [x] History view is read-only and does not mutate logs.
+- [x] Days with no activity logs show a clear empty state.
+- [x] Unit tests for history aggregation/selectors and date filtering are implemented and passing.
 
 ## Task 09: Mobile UX and Polish
 
-- [ ] Core dashboard interactions are easy to use one-handed on mobile.
-- [ ] No required action depends on tiny controls or hidden gestures.
-- [ ] Empty, loading, and error states are explicit and actionable.
-- [ ] Interaction latency feels immediate for toggle and CRUD actions.
-- [ ] Unit tests for critical interaction-state utilities and UI state mappers are implemented and passing.
+- [x] Core dashboard interactions are easy to use one-handed on mobile.
+- [x] No required action depends on tiny controls or hidden gestures.
+- [x] Empty, loading, and error states are explicit and actionable.
+- [x] Interaction latency feels immediate for toggle and CRUD actions.
+- [x] Unit tests for critical interaction-state utilities and UI state mappers are implemented and passing.
 
 ## Task 10: PWA Installability
 
-- [ ] App is installable on supported mobile browsers.
-- [ ] App icon and splash-related metadata are correctly configured.
-- [ ] Installed app launches in standalone mode.
-- [ ] Basic offline behavior for shell/navigation is functional (if implemented in MVP scope).
-- [ ] Unit tests for manifest/config generation helpers and PWA-related utility logic are implemented and passing.
+- [x] App is installable on supported mobile browsers.
+- [x] App icon and splash-related metadata are correctly configured.
+- [x] Installed app launches in standalone mode.
+- [x] Basic offline behavior for shell/navigation is functional (if implemented in MVP scope).
+- [x] Unit tests for manifest/config generation helpers and PWA-related utility logic are implemented and passing.
 
 ## Task 11: Deployment and Environment Configuration
 
 - [ ] App deploys successfully to Vercel.
-- [ ] Environment variables are required and validated at startup.
+- [x] Environment variables are required and validated at startup.
 - [ ] Auth and data flows work in deployed environment.
-- [ ] Setup documentation allows a new developer to run and deploy the app.
-- [ ] Unit tests for env validation and configuration parsing utilities are implemented and passing.
+- [x] Setup documentation allows a new developer to run and deploy the app.
+- [x] Unit tests for env validation and configuration parsing utilities are implemented and passing.
 
 ## Task 12: Final Verification and MVP Release
 

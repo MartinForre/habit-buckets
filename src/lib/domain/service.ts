@@ -8,6 +8,7 @@ import {
   deleteActivityById,
   getActivityLogForDate,
   listActivitiesWithBucketIds,
+  listActivityLogDates,
   listActivityLogsForDate,
   listBuckets,
   updateActivityWithBuckets,
@@ -17,6 +18,7 @@ import {
 type HabitRepository = {
   listBuckets: () => Promise<Array<{ id: string; name: string }>>
   listActivitiesWithBucketIds: () => Promise<Array<{ id: string; name: string; bucket_ids: string[] }>>
+  listActivityLogDates: (limit?: number) => Promise<string[]>
   listActivityLogsForDate: (date: string) => Promise<Array<{ activity_id: string; completed: boolean }>>
   getActivityLogForDate: (
     activityId: string,
@@ -139,6 +141,10 @@ export function createHabitService(repository: HabitRepository) {
     async fetchHistoryDay(date: string): Promise<DailyState> {
       return this.fetchDayState(date)
     },
+
+    async listRecentHistoryDates(limit = 14): Promise<string[]> {
+      return repository.listActivityLogDates(limit)
+    },
   }
 }
 
@@ -146,6 +152,7 @@ export function createHabitServiceFromClient(client: SupabaseClient) {
   return createHabitService({
     listBuckets: () => listBuckets(client),
     listActivitiesWithBucketIds: () => listActivitiesWithBucketIds(client),
+    listActivityLogDates: (limit) => listActivityLogDates(client, limit),
     listActivityLogsForDate: (date) => listActivityLogsForDate(client, date),
     getActivityLogForDate: (activityId, date) => getActivityLogForDate(client, activityId, date),
     upsertActivityLog: (input) => upsertActivityLog(client, input),

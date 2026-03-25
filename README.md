@@ -44,3 +44,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 - Vitest + Testing Library for unit tests
 
 For framework docs, see [Next.js documentation](https://nextjs.org/docs).
+
+Deployment and environment setup guide: `docs/deployment-and-env.md`.
