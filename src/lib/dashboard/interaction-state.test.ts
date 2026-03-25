@@ -18,7 +18,15 @@ describe("dashboard interaction state", () => {
   })
 
   it("maps activity toggle labels", () => {
-    expect(getActivityToggleTone(true).label).toBe("Checked")
-    expect(getActivityToggleTone(false).label).toBe("Tap to check")
+    expect(getActivityToggleTone(true)).toEqual({
+      checked: true,
+      circleClass: "border-emerald-300 bg-emerald-100",
+      checkClass: "text-emerald-700",
+    })
+    expect(getActivityToggleTone(false)).toEqual({
+      checked: false,
+      circleClass: "border-zinc-300 bg-zinc-100",
+      checkClass: "text-zinc-500",
+    })
   })
 })

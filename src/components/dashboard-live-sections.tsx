@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { Check } from "lucide-react"
 
 import { createHabitServiceFromClient, type DailyState } from "@/lib/domain"
 import { getActivityToggleTone, getBucketTone } from "@/lib/dashboard/interaction-state"
@@ -44,6 +45,30 @@ export function DashboardLiveSections({ initialState }: DashboardLiveSectionsPro
     () => new Map(state.buckets.map((bucket) => [bucket.id, bucket.name])),
     [state.buckets]
   )
+
+  const bucketActivityCounts = useMemo(() => {
+    return state.buckets.map((bucket) => {
+      let total = 0
+      let checked = 0
+
+      for (const activity of state.activities) {
+        if (!activity.bucketIds.includes(bucket.id)) {
+          continue
+        }
+
+        total += 1
+        if (activity.completed) {
+          checked += 1
+        }
+      }
+
+      return {
+        bucketId: bucket.id,
+        checked,
+        total,
+      }
+    })
+  }, [state.activities, state.buckets])
 
   const hasActivities = state.activities.length > 0
 
@@ -103,20 +128,19 @@ export function DashboardLiveSections({ initialState }: DashboardLiveSectionsPro
   return (
     <>
       <section className="surface-card space-y-3 p-4 text-card-foreground">
-        <h2 className="text-sm font-medium text-muted-foreground">Today&apos;s buckets</h2>
-        <ul className="space-y-2">
+        <h2 className="text-sm font-medium text-muted-foreground">Buckets</h2>
+        <ul className="-mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 pb-1">
           {state.buckets.map((bucket) => {
             const tone = getBucketTone(bucket.completed)
+            const counts = bucketActivityCounts.find((item) => item.bucketId === bucket.id)
 
             return (
               <li
                 key={bucket.id}
-                className={`touch-target flex items-center justify-between rounded-xl border px-3 py-2 ${tone.containerClass}`}
+                className={`touch-target flex min-w-[9.5rem] snap-start flex-col items-start justify-center rounded-xl border px-3 py-2 ${tone.containerClass}`}
               >
                 <span className="font-medium">{bucket.name}</span>
-                <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${tone.badgeClass}`}>
-                  {tone.label}
-                </span>
+                <span className="mt-1 text-xs font-semibold">{counts?.checked ?? 0} of {counts?.total ?? 0}</span>
               </li>
             )
           })}
@@ -150,8 +174,15 @@ export function DashboardLiveSections({ initialState }: DashboardLiveSectionsPro
                         {bucketNames.join(", ") || "No buckets"}
                       </p>
                     </div>
-                    <span className={`rounded-full px-2 py-1 text-xs font-semibold ${toggleTone.badgeClass}`}>
-                      {pendingIds.has(activity.id) ? "Saving..." : toggleTone.label}
+                    <span
+                      aria-label={activity.completed ? "Checked" : "Unchecked"}
+                      className={`flex size-7 items-center justify-center rounded-full border ${toggleTone.circleClass}`}
+                    >
+                      {toggleTone.checked ? (
+                        <Check className={`size-4 stroke-[2.5] ${toggleTone.checkClass}`} />
+                      ) : (
+                        <span className={`block size-2 rounded-full ${toggleTone.checkClass} bg-current`} />
+                      )}
                     </span>
                   </button>
                 </li>

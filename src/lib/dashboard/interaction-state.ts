@@ -5,8 +5,9 @@ export type BucketTone = {
 }
 
 export type ActivityToggleTone = {
-  label: string
-  badgeClass: string
+  checked: boolean
+  circleClass: string
+  checkClass: string
 }
 
 export function getBucketTone(completed: boolean): BucketTone {
@@ -28,13 +29,15 @@ export function getBucketTone(completed: boolean): BucketTone {
 export function getActivityToggleTone(completed: boolean): ActivityToggleTone {
   if (completed) {
     return {
-      label: "Checked",
-      badgeClass: "bg-emerald-100 text-emerald-800",
+      checked: true,
+      circleClass: "border-emerald-300 bg-emerald-100",
+      checkClass: "text-emerald-700",
     }
   }
 
   return {
-    label: "Tap to check",
-    badgeClass: "bg-zinc-200 text-zinc-700",
+    checked: false,
+    circleClass: "border-zinc-300 bg-zinc-100",
+    checkClass: "text-zinc-500",
   }
 }
