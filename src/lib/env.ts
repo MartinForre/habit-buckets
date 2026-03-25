@@ -5,14 +5,14 @@ export type SupabasePublicEnv = {
 
 type EnvSource = Record<string, string | undefined>
 
-function requireEnv(source: EnvSource, key: string): string {
-  const value = source[key]?.trim()
+function requireNamedEnv(value: string | undefined, key: string): string {
+  const normalized = value?.trim()
 
-  if (!value) {
+  if (!normalized) {
     throw new Error(`Missing ${key}`)
   }
 
-  return value
+  return normalized
 }
 
 function requireUrl(value: string, key: string): string {
@@ -30,11 +30,21 @@ function requireUrl(value: string, key: string): string {
 }
 
 export function parseSupabasePublicEnv(source: EnvSource = process.env): SupabasePublicEnv {
+  const isDefaultSource = source === process.env
+
+  const rawUrl = isDefaultSource
+    ? process.env.NEXT_PUBLIC_SUPABASE_URL
+    : source.NEXT_PUBLIC_SUPABASE_URL
+
+  const rawAnonKey = isDefaultSource
+    ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    : source.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
   const supabaseUrl = requireUrl(
-    requireEnv(source, "NEXT_PUBLIC_SUPABASE_URL"),
+    requireNamedEnv(rawUrl, "NEXT_PUBLIC_SUPABASE_URL"),
     "NEXT_PUBLIC_SUPABASE_URL"
   )
-  const supabaseAnonKey = requireEnv(source, "NEXT_PUBLIC_SUPABASE_ANON_KEY")
+  const supabaseAnonKey = requireNamedEnv(rawAnonKey, "NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
   return {
     url: supabaseUrl,
