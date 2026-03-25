@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
+import { BottomNav } from "@/components/bottom-nav"
 import { Button } from "@/components/ui/button"
 import { assertDateKey, createHabitServiceFromClient, getTodayDateKey } from "@/lib/domain"
 import {
@@ -38,7 +39,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
   const dateOptions = createHistoryDateOptions(recentDates, selectedDate, 14)
 
   return (
-    <main className="app-shell flex min-h-screen flex-col">
+    <main className="app-shell flex min-h-screen flex-col pb-[calc(7rem+env(safe-area-inset-bottom))]">
       <header className="mb-5 flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-muted-foreground">History</p>
@@ -102,6 +103,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
           </p>
         )}
       </section>
+      <BottomNav current="history" />
     </main>
   )
 }
