@@ -4,8 +4,10 @@ import { createHabitService } from "@/lib/domain/service"
 
 function createRepositoryMock() {
   return {
+    ensureDefaultBuckets: vi.fn().mockResolvedValue(undefined),
     listBuckets: vi.fn(),
     listActivitiesWithBucketIds: vi.fn(),
+    listActivityLogDates: vi.fn(),
     listActivityLogsForDate: vi.fn(),
     getActivityLogForDate: vi.fn(),
     upsertActivityLog: vi.fn(),
@@ -34,6 +36,7 @@ describe("habit service", () => {
     const service = createHabitService(repo)
     const state = await service.fetchDayState("2026-03-25")
 
+    expect(repo.ensureDefaultBuckets).toHaveBeenCalled()
     expect(state.date).toBe("2026-03-25")
     expect(state.buckets).toEqual([
       { id: "b1", name: "Body", completed: true },

@@ -6,6 +6,7 @@ import { validateActivityPayload } from "@/lib/domain/validation"
 import {
   createActivityWithBuckets,
   deleteActivityById,
+  ensureDefaultBuckets,
   getActivityLogForDate,
   listActivitiesWithBucketIds,
   listActivityLogDates,
@@ -16,6 +17,7 @@ import {
 } from "@/lib/supabase/repositories"
 
 type HabitRepository = {
+  ensureDefaultBuckets: () => Promise<void>
   listBuckets: () => Promise<Array<{ id: string; name: string }>>
   listActivitiesWithBucketIds: () => Promise<Array<{ id: string; name: string; bucket_ids: string[] }>>
   listActivityLogDates: (limit?: number) => Promise<string[]>
@@ -79,6 +81,9 @@ export function createHabitService(repository: HabitRepository) {
   return {
     async fetchDayState(date: string): Promise<DailyState> {
       const day = assertDateKey(date)
+
+      await repository.ensureDefaultBuckets()
+
       const [buckets, activities, logs] = await Promise.all([
         repository.listBuckets(),
         repository.listActivitiesWithBucketIds(),
@@ -150,6 +155,7 @@ export function createHabitService(repository: HabitRepository) {
 
 export function createHabitServiceFromClient(client: SupabaseClient) {
   return createHabitService({
+    ensureDefaultBuckets: () => ensureDefaultBuckets(client),
     listBuckets: () => listBuckets(client),
     listActivitiesWithBucketIds: () => listActivitiesWithBucketIds(client),
     listActivityLogDates: (limit) => listActivityLogDates(client, limit),

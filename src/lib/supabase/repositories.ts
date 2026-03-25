@@ -34,6 +34,27 @@ type ActivityWithBucketsResponse = {
   activity_buckets: Array<{ bucket_id: string }>
 }
 
+async function requireUserId(client: SupabaseClient): Promise<string> {
+  const {
+    data: { user },
+    error,
+  } = await client.auth.getUser()
+
+  if (error || !user) {
+    throw new Error("Failed to resolve authenticated user")
+  }
+
+  return user.id
+}
+
+export async function ensureDefaultBuckets(client: SupabaseClient): Promise<void> {
+  const result = await client.rpc("ensure_default_buckets_for_current_user")
+
+  if (result.error) {
+    unwrapDbResult(result, "Failed to ensure default buckets")
+  }
+}
+
 export async function listBuckets(client: SupabaseClient): Promise<BucketRecord[]> {
   const result = await client
     .from("buckets")
@@ -49,10 +70,11 @@ export async function listBuckets(client: SupabaseClient): Promise<BucketRecord[
 
 export async function createBucket(client: SupabaseClient, name: string): Promise<BucketRecord> {
   const normalizedName = normalizeBucketName(name)
+  const userId = await requireUserId(client)
 
   const result = await client
     .from("buckets")
-    .insert({ name: normalizedName })
+    .insert({ name: normalizedName, user_id: userId })
     .select("id, name, created_at")
     .single()
 
@@ -77,10 +99,12 @@ export async function createActivityWithBuckets(
   name: string,
   bucketIds: string[]
 ): Promise<ActivityRecord> {
+  const userId = await requireUserId(client)
+
   const activity = unwrapDbResult<ActivityRecord>(
     await client
       .from("activities")
-      .insert({ name: normalizeBucketName(name) })
+      .insert({ name: normalizeBucketName(name), user_id: userId })
       .select("id, name, created_at")
       .single(),
     "Failed to create activity"
@@ -164,10 +188,13 @@ export async function upsertActivityLog(
     completed: boolean
   }
 ): Promise<ActivityLogRecord> {
+  const userId = await requireUserId(client)
+
   const result = await client
     .from("activity_logs")
     .upsert(
       {
+        user_id: userId,
         activity_id: input.activityId,
         date: input.date,
         completed: input.completed,

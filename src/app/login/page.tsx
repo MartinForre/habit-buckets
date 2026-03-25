@@ -17,9 +17,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const next = params.next ?? ""
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-10 sm:px-6">
-      <section className="rounded-2xl border bg-card p-6 text-card-foreground shadow-sm">
-        <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
+    <main className="app-shell flex min-h-screen flex-col justify-center">
+      <section className="surface-card p-6 text-card-foreground sm:p-8">
+        <h1 className="text-3xl">Sign in</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Continue to your daily Habit Buckets dashboard.
         </p>
@@ -43,7 +43,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               name="email"
               type="email"
               autoComplete="email"
-              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+              className="touch-target w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
             />
           </label>
           <label className="block space-y-1">
@@ -53,7 +53,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               name="password"
               type="password"
               autoComplete="current-password"
-              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+              className="touch-target w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
             />
           </label>
 

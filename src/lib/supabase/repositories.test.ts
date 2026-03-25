@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import {
   createActivityWithBuckets,
+  ensureDefaultBuckets,
   listBuckets,
   updateActivityWithBuckets,
   upsertActivityLog,
@@ -24,7 +25,15 @@ describe("supabase repositories", () => {
     expect(order).toHaveBeenCalledWith("created_at", { ascending: true })
   })
 
-  it("creates activity and bucket mappings without user_id payload", async () => {
+  it("ensures default buckets via RPC", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: null, error: null })
+
+    await ensureDefaultBuckets({ rpc } as never)
+
+    expect(rpc).toHaveBeenCalledWith("ensure_default_buckets_for_current_user")
+  })
+
+  it("creates activity and bucket mappings with authenticated user id", async () => {
     const single = vi.fn().mockResolvedValue({
       data: { id: "a1", name: "Disc golf", created_at: "2026-01-01T00:00:00Z" },
       error: null,
@@ -48,9 +57,13 @@ describe("supabase repositories", () => {
       throw new Error(`Unexpected table ${table}`)
     })
 
-    await createActivityWithBuckets({ from } as never, "Disc golf", ["bucket-1", "bucket-2"])
+    const auth = {
+      getUser: vi.fn().mockResolvedValue({ data: { user: { id: "user-1" } }, error: null }),
+    }
 
-    expect(activityInsert).toHaveBeenCalledWith({ name: "Disc golf" })
+    await createActivityWithBuckets({ from, auth } as never, "Disc golf", ["bucket-1", "bucket-2"])
+
+    expect(activityInsert).toHaveBeenCalledWith({ name: "Disc golf", user_id: "user-1" })
     expect(mappingInsert).toHaveBeenCalledWith([
       { activity_id: "a1", bucket_id: "bucket-1" },
       { activity_id: "a1", bucket_id: "bucket-2" },
@@ -73,8 +86,11 @@ describe("supabase repositories", () => {
     const select = vi.fn().mockReturnValue({ single })
     const upsert = vi.fn().mockReturnValue({ select })
     const from = vi.fn().mockReturnValue({ upsert })
+    const auth = {
+      getUser: vi.fn().mockResolvedValue({ data: { user: { id: "user-1" } }, error: null }),
+    }
 
-    await upsertActivityLog({ from } as never, {
+    await upsertActivityLog({ from, auth } as never, {
       activityId: "a1",
       date: "2026-03-25",
       completed: true,
@@ -83,6 +99,7 @@ describe("supabase repositories", () => {
     expect(from).toHaveBeenCalledWith("activity_logs")
     expect(upsert).toHaveBeenCalledWith(
       {
+        user_id: "user-1",
         activity_id: "a1",
         date: "2026-03-25",
         completed: true,

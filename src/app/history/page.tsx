@@ -38,11 +38,11 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
   const dateOptions = createHistoryDateOptions(recentDates, selectedDate, 14)
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-10 sm:px-6">
+    <main className="app-shell flex min-h-screen flex-col">
       <header className="mb-5 flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm text-muted-foreground">History</p>
-          <h1 className="text-2xl font-semibold tracking-tight">{day.date}</h1>
+          <p className="text-sm font-semibold text-muted-foreground">History</p>
+          <h1 className="text-3xl">{day.date}</h1>
         </div>
         <Link href="/dashboard">
           <Button size="sm" variant="outline">
@@ -51,14 +51,14 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
         </Link>
       </header>
 
-      <section className="space-y-2 rounded-2xl border bg-card p-4 text-card-foreground shadow-sm">
+      <section className="surface-card space-y-2 p-4 text-card-foreground">
         <h2 className="text-sm font-medium text-muted-foreground">Recent days</h2>
         <ul className="grid grid-cols-2 gap-2">
           {dateOptions.map((option) => (
             <li key={option.date}>
               <Link
                 href={option.href}
-                className={`block rounded-lg border px-3 py-2 text-sm ${
+                className={`touch-target block rounded-lg border px-3 py-2 text-sm ${
                   option.selected ? "border-emerald-300 bg-emerald-50" : "border-border"
                 }`}
               >
@@ -69,7 +69,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
         </ul>
       </section>
 
-      <section className="mt-4 space-y-3 rounded-2xl border bg-card p-4 text-card-foreground shadow-sm">
+      <section className="surface-card mt-4 space-y-3 p-4 text-card-foreground">
         <h2 className="text-sm font-medium text-muted-foreground">Completed buckets</h2>
         {day.completedBucketNames.length > 0 ? (
           <ul className="space-y-2">
@@ -86,7 +86,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
         )}
       </section>
 
-      <section className="mt-4 space-y-3 rounded-2xl border bg-card p-4 text-card-foreground shadow-sm">
+      <section className="surface-card mt-4 space-y-3 p-4 text-card-foreground">
         <h2 className="text-sm font-medium text-muted-foreground">Completed activities</h2>
         {day.hasLogs ? (
           <ul className="space-y-2">

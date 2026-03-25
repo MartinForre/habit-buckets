@@ -4,6 +4,7 @@ export {
   createActivityWithBuckets,
   createBucket,
   deleteActivityById,
+  ensureDefaultBuckets,
   getActivityLogForDate,
   listActivities,
   listActivitiesWithBucketIds,
